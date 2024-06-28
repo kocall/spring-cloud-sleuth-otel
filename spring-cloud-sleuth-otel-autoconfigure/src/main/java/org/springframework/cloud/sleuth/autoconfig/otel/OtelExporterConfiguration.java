@@ -23,8 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
 import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporterBuilder;
-import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
-import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporterBuilder;
+import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
+import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporterBuilder;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import org.springframework.beans.factory.ObjectProvider;
@@ -88,17 +88,36 @@ class OtelExporterConfiguration {
 	}
 
 	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnClass(OtlpGrpcSpanExporter.class)
+	@ConditionalOnClass(OtlpHttpSpanExporter.class)
 	@ConditionalOnProperty(value = "spring.sleuth.otel.exporter.otlp.enabled", matchIfMissing = true)
 	static class OtlpExporterConfiguration {
 
+		// @Bean
+		// @ConditionalOnMissingBean
+		// OtlpGrpcSpanExporter otelOtlpGrpcSpanExporter(OtelExporterProperties
+		// properties) {
+		// OtlpGrpcSpanExporterBuilder builder = OtlpGrpcSpanExporter.builder();
+		// String endpoint = properties.getOtlp().getEndpoint();
+		// if (StringUtils.hasText(endpoint)) {
+		// builder.setEndpoint(endpoint);
+		// }
+		// Long timeout = properties.getOtlp().getTimeout();
+		// if (timeout != null) {
+		// builder.setTimeout(timeout, TimeUnit.MILLISECONDS);
+		// }
+		// Map<String, String> headers = properties.getOtlp().getHeaders();
+		// if (!headers.isEmpty()) {
+		// headers.forEach(builder::addHeader);
+		// }
+		// return builder.build();
+		// }
 		@Bean
 		@ConditionalOnMissingBean
-		OtlpGrpcSpanExporter otelOtlpGrpcSpanExporter(OtelExporterProperties properties) {
-			OtlpGrpcSpanExporterBuilder builder = OtlpGrpcSpanExporter.builder();
+		OtlpHttpSpanExporter otlpHttpSpanExporter(OtelExporterProperties properties) {
+			OtlpHttpSpanExporterBuilder builder = OtlpHttpSpanExporter.builder();
 			String endpoint = properties.getOtlp().getEndpoint();
 			if (StringUtils.hasText(endpoint)) {
-				builder.setEndpoint(endpoint);
+				builder.setEndpoint(endpoint + "/v1/traces");
 			}
 			Long timeout = properties.getOtlp().getTimeout();
 			if (timeout != null) {

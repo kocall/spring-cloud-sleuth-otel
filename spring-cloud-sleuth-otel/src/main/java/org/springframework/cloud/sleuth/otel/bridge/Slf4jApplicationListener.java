@@ -17,6 +17,7 @@
 package org.springframework.cloud.sleuth.otel.bridge;
 
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.sdk.trace.ReadableSpan;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.slf4j.MDC;
@@ -36,6 +37,12 @@ public class Slf4jApplicationListener implements ApplicationListener<Application
 		if (span != null) {
 			MDC.put("traceId", span.getSpanContext().getTraceId());
 			MDC.put("spanId", span.getSpanContext().getSpanId());
+			if (span instanceof ReadableSpan) {
+				MDC.put("parentId", ((ReadableSpan) span).toSpanData().getParentSpanId());
+			}
+			else {
+				log.error("span type is:" + span.getClass().getName());
+			}
 		}
 	}
 
@@ -47,6 +54,12 @@ public class Slf4jApplicationListener implements ApplicationListener<Application
 		if (span != null) {
 			MDC.put("traceId", span.getSpanContext().getTraceId());
 			MDC.put("spanId", span.getSpanContext().getSpanId());
+			if (span instanceof ReadableSpan) {
+				MDC.put("parentId", ((ReadableSpan) span).toSpanData().getParentSpanId());
+			}
+			else {
+				log.error("span type is:" + span.getClass().getName());
+			}
 		}
 	}
 
@@ -56,6 +69,7 @@ public class Slf4jApplicationListener implements ApplicationListener<Application
 		}
 		MDC.remove("traceId");
 		MDC.remove("spanId");
+		MDC.remove("parentId");
 	}
 
 	@Override
