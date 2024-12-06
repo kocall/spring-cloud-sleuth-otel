@@ -41,7 +41,7 @@ public class Slf4jApplicationListener implements ApplicationListener<Application
 				MDC.put("parentId", ((ReadableSpan) span).toSpanData().getParentSpanId());
 			}
 			else {
-				log.error("span type is:" + span.getClass().getName());
+				log.debug("span type is:" + span.getClass().getName());
 			}
 		}
 	}
@@ -58,7 +58,7 @@ public class Slf4jApplicationListener implements ApplicationListener<Application
 				MDC.put("parentId", ((ReadableSpan) span).toSpanData().getParentSpanId());
 			}
 			else {
-				log.error("span type is:" + span.getClass().getName());
+				log.debug("span type is:" + span.getClass().getName());
 			}
 		}
 	}

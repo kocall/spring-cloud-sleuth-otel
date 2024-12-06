@@ -30,6 +30,7 @@
 	<suppress files=".*TracingFeignClient.*" checks="LineLengthCheck"/>
 	<suppress files=".*WebClientTests.*" checks="LineLengthCheck"/>
 	<suppress files=".*TraceReactorAutoConfigurationAccessorConfiguration.*" checks="LineLengthCheck"/>
+	<suppress files=".*Sample.*" checks="RegexpHeaderCheck"/>
 	<suppress files=".*SamplerAutoConfiguration.*" checks="HideUtilityClassConstructorCheck"/>
 	<suppress files=".*TraceReactorAutoConfiguration.*" checks="HideUtilityClassConstructorCheck"/>
 	<suppress files=".*Configuration.*" checks="HideUtilityClassConstructorCheck"/>
